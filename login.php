@@ -2,9 +2,9 @@
 // login.php
 session_start();
 
-// If the user is already logged in, redirect to index.php
-if (isset($_SESSION['admin']) && $_SESSION['admin'] === true) {
-    header("Location: index.php");
+// If the user is already logged in, redirect to the dashboard
+if (isset($_SESSION['admin']) && $_SESSION['admin'] === true || isset($_SESSION['user_id'])) {
+    header("Location: dashboard.php");
     exit();
 }
 

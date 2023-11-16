@@ -29,19 +29,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->bind_result($id, $fetchedUsername, $hashed_password);
 
-    if ($stmt->fetch() && password_verify($password, $hashed_password)) {
-        // Set a session variable to identify the user as admin
-        session_start();
-        $_SESSION['admin'] = true;
-        $_SESSION['username'] = $fetchedUsername;
-        echo "Login successful. Redirecting to dashboard..."; // Debugging statement
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        echo "Invalid username or password."; // Debugging statement
-    }
+  if ($stmt->fetch() && password_verify($password, $hashed_password)) {
+    // Set session variables
+    session_start();
+    $_SESSION['admin'] = true;
+    $_SESSION['username'] = $fetchedUsername;
 
-    $stmt->close();
+    // Get user ID and set it in the session
+    $_SESSION['user_id'] = $id;
+
+    echo "Login successful. Redirecting to dashboard..."; // Debugging statement
+    header("Location: dashboard.php");
+    exit();
+} else {
+    echo "Invalid username or password."; // Debugging statement
+}
+
+$stmt->close();
 }
 
 $conn->close();
