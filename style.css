@@ -1,0 +1,105 @@
+/* Add this to your style.css */
+
+body {
+    background-image: url('wallpaper.jpg'); /* Relative path to your image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: #333; /* Light mode text color */
+}
+
+.dark-mode body {
+    background-color: #333; /* Dark mode background color */
+    color: #fff; /* Dark mode text color */
+}
+
+.black-mode body {
+    background-color: #000; /* Black mode background color */
+    color: #fff; /* Black mode text color */
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Light mode background color for the container */
+    color: #333; /* Light mode text color for the container */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners for the container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+    margin-top: 10px; /* Adjust the margin-top as needed */
+}
+
+.dark-mode .container {
+    background-color: rgba(51, 51, 51, 0.8); /* Dark mode background color for the container */
+    color: #fff; /* Dark mode text color for the container */
+}
+
+.black-mode .container {
+    background-color: rgba(0, 0, 0, 0.8); /* Black mode background color for the container */
+    color: #fff; /* Black mode text color for the container */
+}
+
+.table {
+    background-color: rgba(255, 255, 255, 0.8); /* Light mode background color for the table */
+    color: #333; /* Light mode text color for the table */
+    border-radius: 5px; /* Rounded corners for the table */
+    overflow: hidden; /* Hide overflow for rounded corners */
+}
+
+.dark-mode .table {
+    background-color: rgba(51, 51, 51, 0.8); /* Dark mode background color for the table */
+    color: #fff; /* Dark mode text color for the table */
+}
+
+.black-mode .table {
+    background-color: rgba(0, 0, 0, 0.8); /* Black mode background color for the table */
+    color: #fff; /* Black mode text color for the table */
+}
+
+/* Background color for the entire body, including rounded corners */
+body.dark-mode, body.black-mode {
+    background-color: #333; /* Dark mode background color for the entire body */
+}
+
+/* Add this CSS for the custom toggle switch styles */
+.toggle-container {
+    display: inline-block;
+    position: relative;
+}
+
+.toggle {
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: absolute;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    left: 0; /* Set left position to 0 initially */
+}
+
+.toggle.active {
+    background-color: #66bb6a; /* Color when dark mode is active */
+    left: 20px; /* Set left position to 20px for active state */
+}
+
+/* Position the toggle switch to resemble a checkbox */
+.toggle:before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 2px; /* Adjusted left position for better alignment */
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s;
+}
+
+.toggle.active:before {
+    left: 20px; /* Adjusted left position for active state */
+    transform: translate(-50%, -50%);
+}
+
+/* Add more styling as needed */
