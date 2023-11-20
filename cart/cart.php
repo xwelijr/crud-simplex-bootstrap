@@ -21,7 +21,7 @@ if ($conn->connect_error) {
 
 // Function to get item details by ID
 function getItemDetails($conn, $itemId) {
-    $stmt = $conn->prepare("SELECT name, price FROM items WHERE id = ?");
+    $stmt = $conn->prepare("SELECT name, price, image_url FROM items WHERE id = ?");
     $stmt->bind_param("i", $itemId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -33,6 +33,30 @@ function getItemDetails($conn, $itemId) {
 
     $stmt->close();
     return false;
+}
+
+// Function to get user details by ID
+function getUserDetails($conn, $userId) {
+    $stmt = $conn->prepare("SELECT username, address, email FROM users WHERE id = ?");
+    
+    if (!$stmt) {
+        die("Error in user details query: " . $conn->error);
+    }
+    
+    $stmt->bind_param("i", $userId);
+    
+    if (!$stmt->execute()) {
+        die("Error executing user details query: " . $stmt->error);
+    }
+
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        $stmt->close();
+        return $row;
+    } else {
+        die("Error fetching user details: " . $stmt->error);
+    }
 }
 
 // Check if the cart session variable is set
@@ -82,10 +106,14 @@ if (isset($_SESSION['cart'])) {
                 'name' => $itemDetails['name'],
                 'price' => $itemPrice,
                 'quantity' => $quantity,
+                'image_url' => $itemDetails['image_url'], // Added image URL
             );
         }
     }
 }
+
+// Get user details
+$userDetails = getUserDetails($conn, $_SESSION['user_id']);
 
 // Function to format price as IDR
 function formatPriceIDR($price) {
@@ -104,11 +132,17 @@ function formatPriceIDR($price) {
 </head>
 <body>
     <div class="container mt-5">
-        <h2>Keranjang Belanja <?php echo $_SESSION['username']; ?>!</h2>
-        <p>Barang yang sudah dimasukkan ke dalam keranjang</p>
+        <h2>Keranjang Belanja <?php echo $userDetails['username']; ?>!</h2>
+        <p></p>
+
+        <!-- User Information -->
+        <h4>Informasi Pengiriman</h4>
+        <p><strong>Nama:</strong> <?php echo $userDetails['username']; ?></p>
+        <p><strong>Alamat:</strong> <?php echo $userDetails['address']; ?></p>
+        <p><strong>Email:</strong> <?php echo $userDetails['email']; ?></p>
 
         <!-- Shopping Cart -->
-        <h3>Keranjang Belanja</h3>
+        <h3>Keranjang</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -116,6 +150,7 @@ function formatPriceIDR($price) {
                     <th scope="col">Harga Barang</th>
                     <th scope="col">Jumlah</th>
                     <th scope="col">Total Harga</th>
+                    <th scope="col">Gambar</th> <!-- Added column for image -->
                     <th scope="col">Aksi</th>
                 </tr>
             </thead>
@@ -137,6 +172,7 @@ function formatPriceIDR($price) {
                             </form>
                         </td>";
                     echo "<td>" . formatPriceIDR($cartItem['price']) . "</td>";
+                    echo "<td><img src='../{$cartItem['image_url']}' alt='Item Image' style='max-width: 100px; max-height: 100px;'></td>";
                     echo "<td>
                             <a href='cart.php?delete_item={$cartItem['id']}' class='btn btn-danger btn-sm'>Hapus</a>
                         </td>";

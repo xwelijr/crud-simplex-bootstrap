@@ -15,22 +15,25 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $updated_id = $_POST["id"];
     $updated_username = $_POST["updated_username"];
-    $updated_password = $_POST["new_password"]; // Corrected the field name
+    $updated_password = $_POST["new_password"];
+    $updated_age = $_POST["updated_age"];
+    $updated_email = $_POST["updated_email"];
+    $updated_address = $_POST["updated_address"];
 
-    // Check if the password is not empty before updating
+    // Check if the password is provided
     if (!empty($updated_password)) {
         $hashed_password = password_hash($updated_password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("UPDATE users SET username = ?, password = ? WHERE id = ?");
-        $stmt->bind_param("ssi", $updated_username, $hashed_password, $updated_id);
+        $stmt = $conn->prepare("UPDATE users SET username = ?, password = ?, age = ?, email = ?, address = ? WHERE id = ?");
+        $stmt->bind_param("ssissi", $updated_username, $hashed_password, $updated_age, $updated_email, $updated_address, $updated_id);
     } else {
-        // If the password is not provided, update only the username
-        $stmt = $conn->prepare("UPDATE users SET username = ? WHERE id = ?");
-        $stmt->bind_param("si", $updated_username, $updated_id);
+        // If the password is not provided, update other fields excluding the password
+        $stmt = $conn->prepare("UPDATE users SET username = ?, age = ?, email = ?, address = ? WHERE id = ?");
+        $stmt->bind_param("sissi", $updated_username, $updated_age, $updated_email, $updated_address, $updated_id);
     }
 
     if ($stmt->execute()) {
         // Display a success alert using JavaScript
-        echo '<script>alert("Username and Password updated successfully!");</script>';
+        echo '<script>alert("User information updated successfully!");</script>';
         header("Location: dashboard.php");
         exit();
     } else {

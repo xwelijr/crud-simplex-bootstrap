@@ -27,6 +27,21 @@ include 'header.php';
             <input type="password" id="password" name="password" class="form-control" required>
         </div>
 
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" class="form-control" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
         <button type="submit" class="btn btn-primary">Registrasi</button>
     </form>
     <p class="mt-3"><a href="login.php">Sudah Punya Akun? Login Disini</a></p>

@@ -14,10 +14,10 @@ if ($conn->connect_error) {
 // Update user process
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
     $user_id = $_GET["id"];
-    $stmt = $conn->prepare("SELECT id, username FROM users WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, username, age, address, email FROM users WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $stmt->bind_result($id, $username);
+    $stmt->bind_result($id, $username, $age, $address, $email);
 
     if ($stmt->fetch()) {
         // Display the update form
@@ -42,16 +42,31 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
                         <input type="text" id="updated_username" name="updated_username" class="form-control" value="<?php echo $username; ?>" required>
                     </div>
 
-                   <div class="form-group">
-    <label for="new_password">New Password:</label>
-    <input type="password" id="new_password" name="new_password" class="form-control" required>
+                <div class="form-group">
+    <label for="updated_age">Age:</label>
+    <input type="text" id="updated_age" name="updated_age" class="form-control" value="<?php echo $age; ?>" required>
 </div>
 
 <div class="form-group">
-    <label for="confirm_password">Confirm Password:</label>
-    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+    <label for="updated_address">Address:</label>
+    <input type="text" id="updated_address" name="updated_address" class="form-control" value="<?php echo $address; ?>" required>
 </div>
 
+<div class="form-group">
+    <label for="updated_email">Email:</label>
+    <input type="email" id="updated_email" name="updated_email" class="form-control" value="<?php echo $email; ?>" required>
+</div>
+
+
+                    <div class="form-group">
+                        <label for="new_password">New Password:</label>
+                        <input type="password" id="new_password" name="new_password" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password:</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                    </div>
 
                     <button type="submit" class="btn btn-primary">Update User</button>
                 </form>

@@ -16,6 +16,9 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
+    $age = $_POST["age"];
+    $address = $_POST["address"];
+    $email = $_POST["email"];
 
     // Check if the user already has a cart
     $cart_id = getCartId($conn, $username);
@@ -26,13 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Check if cart_id and other parameters are correct
-  //  echo "Username: $username, Password: $password, Cart ID: $cart_id";
+    // echo "Username: $username, Password: $password, Age: $age, Address: $address, Email: $email, Cart ID: $cart_id";
 
-    $stmt = $conn->prepare("INSERT INTO users (username, password, cart_id) VALUES (?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO users (username, password, age, address, email, cart_id) VALUES (?, ?, ?, ?, ?, ?)");
 
     // Check if the prepare statement is successful
     if ($stmt) {
-        $stmt->bind_param("ssi", $username, $password, $cart_id);
+        $stmt->bind_param("ssissi", $username, $password, $age, $address, $email, $cart_id);
 
         if ($stmt->execute()) {
             echo "Registration successful. <a href='login.php'>Login here</a>";

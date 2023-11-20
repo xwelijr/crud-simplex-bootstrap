@@ -26,7 +26,7 @@ if ($conn->connect_error) {
 
 // Function to get all users
 function getUsers($conn) {
-    $result = $conn->query("SELECT id, username FROM users");
+    $result = $conn->query("SELECT id, username, age, address, email FROM users");
     $users = array();
 
     while ($row = $result->fetch_assoc()) {
@@ -50,32 +50,38 @@ function getUsers($conn) {
     <div class="container mt-5">
         <!-- Your existing content goes here -->
 
-        <h2>User List</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $users = getUsers($conn);
+       <h2>User List</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Age</th>
+            <th scope="col">Address</th>
+            <th scope="col">Email</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $users = getUsers($conn);
 
-                foreach ($users as $user) {
-                    echo "<tr>";
-                    echo "<td>{$user['id']}</td>";
-                    echo "<td>{$user['username']}</td>";
-                    echo "<td>
-                            <a href='update_user.php?id={$user['id']}' class='btn btn-warning btn-sm'>Update</a>
-                            <a href='delete_user.php?id={$user['id']}' class='btn btn-danger btn-sm'>Delete</a>
-                        </td>";
-                    echo "</tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+        foreach ($users as $user) {
+            echo "<tr>";
+            echo "<td>{$user['id']}</td>";
+            echo "<td>{$user['username']}</td>";
+            echo "<td>{$user['age']}</td>";
+            echo "<td>{$user['address']}</td>";
+            echo "<td>{$user['email']}</td>";
+            echo "<td>
+                    <a href='update_user.php?id={$user['id']}' class='btn btn-warning btn-sm'>Update</a>
+                    <a href='delete_user.php?id={$user['id']}' class='btn btn-danger btn-sm'>Delete</a>
+                </td>";
+            echo "</tr>";
+        }
+        ?>
+    </tbody>
+</table>
 
         <p class="mt-4"><a href="dashboard.php" class="btn btn-secondary">Back to Dashboard</a></p>
     </div>
